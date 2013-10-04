@@ -1,11 +1,13 @@
 package com.jtooltas.recorder;
 
+import java.awt.Robot;
 import java.util.ArrayList;
 
 import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseInputListener;
 import org.jnativehook.mouse.NativeMouseListener;
 
+import com.jtooltas.action.ActionTAS;
 import com.jtooltas.action.BasicAction;
 import com.jtooltas.action.mouse.MouseClickAction;
 import com.jtooltas.action.mouse.MouseMoveAction;
@@ -82,6 +84,32 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 
 	public MousePosition getLastMousePosition() {
 		return this.last_position;
+	}
+
+	/**
+	 * Build all the ActionTAS (linked together) from the BasicAction recorded previously.
+	 * @param robot
+	 * @return ActionTAS (or null if there isn't any record).
+	 */
+	public ActionTAS getActionTASListFromRecord( Robot robot ) {
+		
+		ActionTAS list = null;
+		ActionTAS carret = null;
+		
+		for ( BasicAction action : this.actions ) {
+		
+			ActionTAS new_action = new ActionTAS( robot, action );
+			
+			if ( carret == null ) {
+				list = new_action;
+			} else {
+				carret.setNext( new_action );
+			}
+			
+			carret = new_action;
+		}
+		
+		return list;
 	}
 	
 	@Override

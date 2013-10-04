@@ -9,8 +9,9 @@ public class ActionTAS {
 	private ActionTAS preview = null;
 	private BasicAction action = null;
 	
-	protected ActionTAS( Robot robot ) {
+	public ActionTAS( Robot robot, BasicAction action ) {
 		this.robot = robot;
+		this.action = action;
 	}
 	
 	public void setNext( ActionTAS next ) {
@@ -33,5 +34,9 @@ public class ActionTAS {
 	
 	public ActionTAS preview() {
 		return this.preview;
+	}
+
+	public void setAction( BasicAction action ) {
+		this.action = action;
 	}
 }
