@@ -1,4 +1,4 @@
-package com.jtooltas.action.mouse;
+package com.jtooltas.action;
 
 import java.awt.Robot;
 

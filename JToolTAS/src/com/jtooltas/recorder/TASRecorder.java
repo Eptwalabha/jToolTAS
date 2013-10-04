@@ -6,7 +6,7 @@ import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseInputListener;
 import org.jnativehook.mouse.NativeMouseListener;
 
-import com.jtooltas.action.mouse.BasicAction;
+import com.jtooltas.action.BasicAction;
 import com.jtooltas.action.mouse.MouseClickAction;
 import com.jtooltas.action.mouse.MouseMoveAction;
 import com.jtooltas.commun.MousePosition;

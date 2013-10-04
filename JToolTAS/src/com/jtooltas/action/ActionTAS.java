@@ -2,11 +2,12 @@ package com.jtooltas.action;
 
 import java.awt.Robot;
 
-public abstract class ActionTAS {
+public class ActionTAS {
 
-	protected Robot robot;
-	protected ActionTAS next = null;
-	protected ActionTAS preview = null;
+	private Robot robot;
+	private ActionTAS next = null;
+	private ActionTAS preview = null;
+	private BasicAction action = null;
 	
 	protected ActionTAS( Robot robot ) {
 		this.robot = robot;
@@ -21,6 +22,16 @@ public abstract class ActionTAS {
 		this.preview = preview;
 	}
 	
-	public abstract long execute() throws InterruptedException;
-	public abstract ActionTAS next();
+	public long execute() throws InterruptedException {
+		this.action.execute( this.robot );
+		return 0;
+	}
+	
+	public ActionTAS next() {
+		return this.next;
+	}
+	
+	public ActionTAS preview() {
+		return this.preview;
+	}
 }

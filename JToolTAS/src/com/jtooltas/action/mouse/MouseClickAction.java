@@ -3,6 +3,8 @@ package com.jtooltas.action.mouse;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 
+import com.jtooltas.action.BasicAction;
+
 public class MouseClickAction implements BasicAction {
 
 	private boolean down = true;

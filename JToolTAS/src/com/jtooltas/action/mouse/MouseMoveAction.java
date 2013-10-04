@@ -2,6 +2,7 @@ package com.jtooltas.action.mouse;
 
 import java.awt.Robot;
 
+import com.jtooltas.action.BasicAction;
 import com.jtooltas.commun.MousePosition;
 
 public class MouseMoveAction implements BasicAction {
