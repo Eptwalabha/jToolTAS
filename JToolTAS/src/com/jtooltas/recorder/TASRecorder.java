@@ -1,6 +1,8 @@
 package com.jtooltas.recorder;
 
+import java.awt.Point;
 import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.util.ArrayList;
 
 import org.jnativehook.mouse.NativeMouseEvent;
@@ -11,12 +13,11 @@ import com.jtooltas.action.ActionTAS;
 import com.jtooltas.action.BasicAction;
 import com.jtooltas.action.mouse.MouseClickAction;
 import com.jtooltas.action.mouse.MouseMoveAction;
-import com.jtooltas.commun.MousePosition;
 
 public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMouseListener {
 
-	public ArrayList<BasicAction> actions;
-	private MousePosition last_position;
+	public ArrayList<BasicAction> actions = new ArrayList<BasicAction>();
+	private Point last_position = new Point();
 	
 	private boolean running = false;
 	private boolean reset = true;
@@ -34,21 +35,27 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 		if (this.reset)
 			this.actions = new ArrayList<BasicAction>();
 		
+		try { 
+			System.out.println( "the program will start the mouse record in 1 second\n" );
+			Thread.sleep(1000);
+			System.out.println( "recording now!" );
+		} catch (InterruptedException e) { e.printStackTrace();	}
+		
 		long next_tic = System.currentTimeMillis() + this.delay;
 		
-		MousePosition new_position = null;
-		MousePosition old_position = null;
+		Point new_position = null;
+		Point old_position = null;
 		
 		while ( this.running ) {
 			
 			if ( System.currentTimeMillis() >= next_tic ) {
-				// on récupère la position de la souris
+				// mouse location
 				new_position = this.last_position;
 				
 				if ( old_position == null )
 					old_position = new_position;
 				
-				MouseMoveAction position_action = new MouseMoveAction( old_position.clone(), new_position.clone(), 0 );
+				MouseMoveAction position_action = new MouseMoveAction( new Point( old_position ), new Point( new_position ), this.delay );
 				
 				old_position = new_position;
 				this.actions.add( position_action );
@@ -56,6 +63,8 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 				next_tic += this.delay;
 			}
 		}
+		
+		System.out.println("end of record! size=" + this.actions.size() );
 	}
 
 	public void stopRecording() {
@@ -73,8 +82,26 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 	}
 
 	public void setMouseClick(boolean mouse_down, int mouse_button) {
-		//  une nouvelle action MouseClick est créée.
-		BasicAction action = new MouseClickAction( mouse_down, mouse_button, this.delay);
+		
+		int mouse_button_event = 0;
+		
+		switch (mouse_button) {
+		case 1:
+			mouse_button_event = InputEvent.BUTTON1_DOWN_MASK;
+			break;
+		case 2:
+			mouse_button_event = InputEvent.BUTTON2_DOWN_MASK;
+			break;
+		case 3:
+			mouse_button_event = InputEvent.BUTTON3_DOWN_MASK;
+			break;
+		default:
+			mouse_button_event = InputEvent.BUTTON1_DOWN_MASK;
+			break;
+		}
+		
+		//  a new MouseClick action is created.
+		BasicAction action = new MouseClickAction( mouse_down, mouse_button_event, this.delay);
 		this.actions.add(action);
 	}
 	
@@ -82,7 +109,7 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 		return this.actions;
 	}
 
-	public MousePosition getLastMousePosition() {
+	public Point getLastMousePosition() {
 		return this.last_position;
 	}
 
@@ -118,7 +145,7 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 	@Override
 	public void nativeMouseMoved(NativeMouseEvent arg0) {
 		
-		this.last_position.setMousePosition( arg0.getX(), arg0.getY() );
+		this.last_position.setLocation( arg0.getX(), arg0.getY() );
 	}
 
 	@Override
@@ -127,12 +154,21 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 	@Override
 	public void nativeMousePressed(NativeMouseEvent arg0) {
 	
-		this.setMouseClick( true, arg0.getButton() );
+		if ( this.running )
+			this.setMouseClick( true, arg0.getButton() );
 	}
 
 	@Override
 	public void nativeMouseReleased(NativeMouseEvent arg0) {
 
-		this.setMouseClick( false, arg0.getButton() );
+		if ( this.running )
+			this.setMouseClick( false, arg0.getButton() );
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isRecording() {
+		return this.running;
 	}
 }

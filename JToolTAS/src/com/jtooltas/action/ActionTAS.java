@@ -6,7 +6,7 @@ public class ActionTAS {
 
 	private Robot robot;
 	private ActionTAS next = null;
-	private ActionTAS preview = null;
+	private ActionTAS previous = null;
 	private BasicAction action = null;
 	
 	public ActionTAS( Robot robot, BasicAction action ) {
@@ -16,11 +16,11 @@ public class ActionTAS {
 	
 	public void setNext( ActionTAS next ) {
 		this.next = next;
-		this.next.setPreview( this );
+		this.next.setPrevious( this );
 	}
 	
-	private void setPreview( ActionTAS preview ) {
-		this.preview = preview;
+	private void setPrevious( ActionTAS preview ) {
+		this.previous = preview;
 	}
 	
 	public long execute() throws InterruptedException {
@@ -32,8 +32,8 @@ public class ActionTAS {
 		return this.next;
 	}
 	
-	public ActionTAS preview() {
-		return this.preview;
+	public ActionTAS previous() {
+		return this.previous;
 	}
 
 	public void setAction( BasicAction action ) {
