@@ -6,10 +6,10 @@ package com.jtooltas.recorder;
 import com.jtooltas.action.ActionTAS;
 
 /**
- *
- * @date 4 oct. 2013
- * @author Eptwalabha
- */
+*
+* @date 4 oct. 2013
+* @author Eptwalabha
+*/
 public class TASPlayer {
 	
 	private boolean playing = false;

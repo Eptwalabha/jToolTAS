@@ -22,7 +22,6 @@ public class MouseMoveAction implements BasicAction {
 		this.ms = mouse_start;
 		this.me = mouse_end;
 		this.delay = delay;
-		System.out.println( "x0=" + mouse_start.x + "; y0=" + mouse_start.y + "; x1=" + mouse_end.x + "; y1=" + mouse_end.y + ";");
 	}
 	
 	@Override
@@ -35,7 +34,6 @@ public class MouseMoveAction implements BasicAction {
 		double move_x = this.me.x - this.ms.x;
 		double move_y = this.me.y - this.ms.y;
 		
-		System.out.println( "x=" + move_x + "; y=" + move_y + ";");
 		while ( current < this.delay ) {
 		
 			progression = current / this.delay;
