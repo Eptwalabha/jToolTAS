@@ -83,22 +83,7 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 
 	public void setMouseClick(boolean mouse_down, int mouse_button) {
 		
-		int mouse_button_event = 0;
-		
-		switch (mouse_button) {
-		case 1:
-			mouse_button_event = InputEvent.BUTTON1_DOWN_MASK;
-			break;
-		case 2:
-			mouse_button_event = InputEvent.BUTTON2_DOWN_MASK;
-			break;
-		case 3:
-			mouse_button_event = InputEvent.BUTTON3_DOWN_MASK;
-			break;
-		default:
-			mouse_button_event = InputEvent.BUTTON1_DOWN_MASK;
-			break;
-		}
+		int mouse_button_event = InputEvent.getMaskForButton( mouse_button );
 		
 		//  a new MouseClick action is created.
 		BasicAction action = new MouseClickAction( mouse_down, mouse_button_event, this.delay);
@@ -140,11 +125,12 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 	}
 	
 	@Override
-	public void nativeMouseDragged(NativeMouseEvent arg0) {}
+	public void nativeMouseDragged(NativeMouseEvent arg0) {
+		this.last_position.setLocation( arg0.getX(), arg0.getY() );
+	}
 
 	@Override
 	public void nativeMouseMoved(NativeMouseEvent arg0) {
-		
 		this.last_position.setLocation( arg0.getX(), arg0.getY() );
 	}
 
