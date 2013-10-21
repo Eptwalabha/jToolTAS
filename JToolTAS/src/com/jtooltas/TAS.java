@@ -24,7 +24,7 @@ public class TAS {
 			
 			Robot robot = new Robot();
 			
-			TASRecorder recorder = new TASRecorder(20);
+			TASRecorder recorder = new TASRecorder(50);
 			GlobalScreen.getInstance().addNativeMouseMotionListener(recorder);
 			GlobalScreen.getInstance().addNativeMouseListener(recorder);
 			
