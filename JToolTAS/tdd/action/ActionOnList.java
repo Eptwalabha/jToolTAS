@@ -15,27 +15,41 @@ import com.jtooltas.action.mouse.MouseMoveAction;
 public class ActionOnList {
 
 	ActionTAS[] actions;
+	ActionTAS[] actions2;
+	Robot robot;
 	
+	/**
+	 * 
+	 */
+	public ActionOnList() {
+		
+		try {
+			this.robot = new Robot();
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Before
 	public void prepare() {
 	
-		Robot robot;
-		try {
-			robot = new Robot();
-			
-			actions = new ActionTAS[ 10 ];
-			for( int i = 0, size = actions.length; i < size; i++ ) {
-				actions[ i ] = new ActionTAS( robot, new MouseMoveAction( new Point(), new Point(), 200 ) );
-				if ( i > 0 )
-					actions[ i ].setPrevious( actions[ i - 1 ] );
-			}
-//			for( int i = 0, size = actions.length - 1; i < size; i++ )
-//				actions[ i ].setNext( actions[ i + 1 ] );
-			
-		} catch (AWTException e) {
-			e.printStackTrace();
+		actions = new ActionTAS[ 10 ];
+		for( int i = 0, size = actions.length; i < size; i++ ) {
+			actions[ i ] = new ActionTAS( this.robot, new MouseMoveAction( new Point(), new Point(), 200 ) );
+			if ( i > 0 )
+				actions[ i ].setPrevious( actions[ i - 1 ] );
 		}
+
+		actions2 = new ActionTAS[ 20 ];
+		for( int i = 0, size = actions2.length; i < size; i++ ) {
+			actions2[ i ] = new ActionTAS( this.robot, new MouseMoveAction( new Point(), new Point(), 200 ) );
+			if ( i > 0 )
+				actions2[ i ].setPrevious( actions2[ i - 1 ] );
+		}
+		
+//		for( int i = 0, size = actions.length - 1; i < size; i++ )
+//		actions[ i ].setNext( actions[ i + 1 ] );
+		
 	}
 	
 	@Test
@@ -74,7 +88,7 @@ public class ActionOnList {
 		
 		actions[ 4 ].removeFromList();
 		// 0- -2-3- -5-6-7-8-9
-		assertEquals( 6, actions[ 4 ].size() );
+		assertEquals( 1, actions[ 4 ].size() );
 		
 		actions[ 6 ].removeFromList();
 		// 0- -2-3- -5- -7-8-9
@@ -93,7 +107,47 @@ public class ActionOnList {
 		assertEquals( null, actions[ 8 ].next() );
 
 	}
+	
+	@Test
+	public void removeMultipleElements() {
+		
+		// 0-1-2-3-4-5-6-7-8-9
+		actions[ 3 ].removeFromList(2);
+		// 0-1-2-_-_-5-6-7-8-9
+		assertEquals( 2, actions[3].size() );
+		assertEquals( 8, actions[0].size() );
+		assertEquals( actions[2], actions[5].previous() );
+		assertEquals( actions[5], actions[2].next() );
+		
+		assertEquals( null, actions[9].removeFromList(-3) );
+		
+		actions[6].removeFromList(4);
+		// 0-1-2-_-_-5-_-_-_-_
+		assertEquals( 4, actions[6].size() );
+		assertEquals( 4, actions[0].size() );
+		assertEquals( null, actions[5].next() );
+		
+	}
+	
+	@Test
+	public void removeMultipleElements2() {
+		
+		// 0-1-2-3-4-5-6-7-8-9
+		actions[8].removeFromList(2);
+		// 0-1-2-3-4-5-6-7-_-_
+		assertEquals( 2, actions[8].size() );
+		assertEquals( 8, actions[0].size() );
+		assertEquals( null, actions[7].next() );
+		
+		actions[0].removeFromList(2);
+		// _-_-2-3-4-5-6-7-_-_
+		assertEquals( 2, actions[0].size() );
+		assertEquals( 6, actions[2].size() );
+		assertEquals( null, actions[2].previous() );
 
+	}
+
+	
 	@Test
 	public void insertElementAfterAnOther() {
 		
