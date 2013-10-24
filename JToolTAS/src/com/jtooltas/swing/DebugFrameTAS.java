@@ -63,9 +63,9 @@ public class DebugFrameTAS extends JFrame implements ActionListener {
 		panel.add(this.button_stop);
 		panel.add(this.button_play);
 		
-		this.button_record.addActionListener( this );
-		this.button_stop.addActionListener( this );
-		this.button_play.addActionListener( this );
+		this.button_record.addActionListener(this);
+		this.button_stop.addActionListener(this);
+		this.button_play.addActionListener(this);
 		
 		return panel;
 	}
@@ -75,8 +75,8 @@ public class DebugFrameTAS extends JFrame implements ActionListener {
 	 */
 	private void launchRecorder() {
 
-		System.out.print( "launching recording...");
-		if ( !this.recorder.isRecording() ) {
+		System.out.print("launching recording...");
+		if (!this.recorder.isRecording()) {
 			Thread t = new Thread(this.recorder);
 			t.start();
 		}
@@ -87,10 +87,10 @@ public class DebugFrameTAS extends JFrame implements ActionListener {
 	 */
 	private void stopRecorder() {
 	
-		System.out.print( "stopping recording...");
+		System.out.print("stopping recording...");
 		this.recorder.stopRecording();
 		this.player.stopPlaying();
-		System.out.println( "done!");
+		System.out.println("done!");
 	}
 	
 	/**
@@ -98,14 +98,14 @@ public class DebugFrameTAS extends JFrame implements ActionListener {
 	 */
 	private void launchPlayer() {
 		
-		System.out.print( "launching playing...");
-		if ( !this.player.isPlaying() ) {
+		System.out.print("launching playing...");
+		if (!this.player.isPlaying()) {
 			
-			if ( !this.recorder.isRecording() ) {
+			if (!this.recorder.isRecording()) {
 				this.recorder.stopRecording();
 			}
 			
-			this.player.setActions( this.recorder.getActionTASListFromRecord(this.robot) );
+			this.player.setActions(this.recorder.getActionTASListFromRecord(this.robot));
 			
 			try {
 				this.player.play();
@@ -118,8 +118,8 @@ public class DebugFrameTAS extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if ( e.getSource() == this.button_record ) this.launchRecorder();
-		if ( e.getSource() == this.button_stop ) this.stopRecorder();
-		if ( e.getSource() == this.button_play ) this.launchPlayer();
+		if (e.getSource() == this.button_record) this.launchRecorder();
+		if (e.getSource() == this.button_stop) this.stopRecorder();
+		if (e.getSource() == this.button_play) this.launchPlayer();
 	}
 }

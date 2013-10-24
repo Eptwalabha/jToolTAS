@@ -9,27 +9,27 @@ public class ActionTAS {
 	private ActionTAS previous = null;
 	private BasicAction action = null;
 	
-	public ActionTAS( Robot robot, BasicAction action ) {
+	public ActionTAS(Robot robot, BasicAction action) {
 		this.robot = robot;
 		this.action = action;
 	}
 	
-	public void setNext( ActionTAS next ) {
+	public void setNext(ActionTAS next) {
 		this.next = next;
 		
-		if ( this.next != null )
+		if (this.next != null)
 			this.next.previous = this ;
 	}
 	
-	public void setPrevious( ActionTAS previous ) {
+	public void setPrevious(ActionTAS previous) {
 		this.previous = previous;
 
-		if ( this.previous != null )
+		if (this.previous != null)
 			this.previous.next = this ;
 	}
 	
 	public long execute() throws InterruptedException {
-		this.action.execute( this.robot );
+		this.action.execute(this.robot);
 		return 0;
 	}
 	
@@ -41,12 +41,12 @@ public class ActionTAS {
 		return this.previous;
 	}
 
-	public void setAction( BasicAction action ) {
+	public void setAction(BasicAction action) {
 		this.action = action;
 	}
 	
 	public int sizeRecursive() {
-		if ( this.next != null )
+		if (this.next != null)
 			return this.next.sizeRecursive() + 1;
 		return 1;
 	}
@@ -59,7 +59,7 @@ public class ActionTAS {
 	
 		ActionTAS cursor = this;
 		int size = 1;
-		while( cursor.next != null ) {
+		while(cursor.next != null) {
 			
 			size++;
 			cursor = cursor.next;
@@ -170,7 +170,7 @@ public class ActionTAS {
 	public void insertAfter(ActionTAS action) {
 		
 		if (this.next != null)
-			action.setNext( this.next );
+			action.setNext(this.next);
 		
 		this.setNext(action);
 	}

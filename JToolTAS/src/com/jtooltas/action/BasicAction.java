@@ -4,5 +4,5 @@ import java.awt.Robot;
 
 public interface BasicAction {
 
-	public void execute( Robot robot ) throws InterruptedException;
+	public void execute(Robot robot) throws InterruptedException;
 }

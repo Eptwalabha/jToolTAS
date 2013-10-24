@@ -43,9 +43,9 @@ public class TASPlayer {
 		this.playing = true;
 		ActionTAS next = this.actions;
 		long i = 0;
-		while ( this.playing && next != null ) {
+		while (this.playing && next != null) {
 			
-			System.out.println( "boucle n°" + i );
+			System.out.println("boucle n°" + i);
 			i++;
 			next.execute();
 			next = next.next(); // ho ho ho!

@@ -5,13 +5,13 @@ public abstract class ActionDoUndo {
 	protected ActionDoUndo preview;
 	protected ActionDoUndo next;
 	
-	public ActionDoUndo( ActionDoUndo preview ) {
+	public ActionDoUndo(ActionDoUndo preview) {
 		
 		this.preview = preview;
-		this.preview.setNext( this );
+		this.preview.setNext(this);
 	}
 	
-	public ActionDoUndo setNext( ActionDoUndo next ) {
+	public ActionDoUndo setNext(ActionDoUndo next) {
 		
 		this.next = next;
 		return this;

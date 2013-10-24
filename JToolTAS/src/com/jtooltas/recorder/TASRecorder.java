@@ -23,7 +23,7 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 	private boolean reset = true;
 	private long delay;
 	
-	public TASRecorder( long delay_milli ) {
+	public TASRecorder(long delay_milli) {
 		this.delay = delay_milli;
 		this.reset = true;
 	}
@@ -36,9 +36,9 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 			this.actions = new ArrayList<BasicAction>();
 		
 		try { 
-			System.out.print( "the program will start the mouse record in 1 second\n" );
+			System.out.print("the program will start the mouse record in 1 second\n");
 			Thread.sleep(1000);
-			System.out.println( "recording now!" );
+			System.out.println("recording now!");
 		} catch (InterruptedException e) { e.printStackTrace();	}
 		
 		long next_tic = System.currentTimeMillis() + this.delay;
@@ -46,25 +46,25 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 		Point new_position = null;
 		Point old_position = null;
 		
-		while ( this.running ) {
+		while (this.running) {
 			
-			if ( System.currentTimeMillis() >= next_tic ) {
+			if (System.currentTimeMillis() >= next_tic) {
 				// mouse location
-				new_position = this.last_position;
+				new_position = new Point(this.last_position);
 				
-				if ( old_position == null )
-					old_position = new_position;
+				if (old_position == null)
+					old_position = new Point(new_position);
 				
-				MouseMoveAction position_action = new MouseMoveAction( new Point( old_position ), new Point( new_position ), this.delay );
+				MouseMoveAction position_action = new MouseMoveAction(new Point(old_position), new Point(new_position), this.delay);
 				
-				old_position = new_position;
-				this.actions.add( position_action );
+				old_position = new Point(new_position);
+				this.actions.add(position_action);
 				
 				next_tic += this.delay;
 			}
 		}
 		
-		System.out.println("end of record! size=" + this.actions.size() );
+		System.out.println("end of record! size=" + this.actions.size());
 	}
 
 	public void stopRecording() {
@@ -77,16 +77,16 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 		this.reset = false;
 	}
 	
-	public void changeDelay( long new_delay_milli ) {
+	public void changeDelay(long new_delay_milli) {
 		this.delay = new_delay_milli;
 	}
 
 	public void setMouseClick(boolean mouse_down, int mouse_button) {
 		
-		int mouse_button_event = InputEvent.getMaskForButton( mouse_button );
+		int mouse_button_event = InputEvent.getMaskForButton(mouse_button);
 		
 		//  a new MouseClick action is created.
-		BasicAction action = new MouseClickAction( mouse_down, mouse_button_event, this.delay);
+		BasicAction action = new MouseClickAction(mouse_down, mouse_button_event, this.delay);
 		this.actions.add(action);
 	}
 	
@@ -103,19 +103,19 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 	 * @param robot
 	 * @return ActionTAS (or null if there isn't any record).
 	 */
-	public ActionTAS getActionTASListFromRecord( Robot robot ) {
+	public ActionTAS getActionTASListFromRecord(Robot robot) {
 		
 		ActionTAS list = null;
 		ActionTAS carret = null;
 		
-		for ( BasicAction action : this.actions ) {
+		for (BasicAction action : this.actions) {
 		
-			ActionTAS new_action = new ActionTAS( robot, action );
+			ActionTAS new_action = new ActionTAS(robot, action);
 			
-			if ( carret == null ) {
+			if (carret == null) {
 				list = new_action;
 			} else {
-				carret.setNext( new_action );
+				carret.setNext(new_action);
 			}
 			
 			carret = new_action;
@@ -126,12 +126,12 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 	
 	@Override
 	public void nativeMouseDragged(NativeMouseEvent arg0) {
-		this.last_position.setLocation( arg0.getX(), arg0.getY() );
+		this.last_position.setLocation(arg0.getX(), arg0.getY());
 	}
 
 	@Override
 	public void nativeMouseMoved(NativeMouseEvent arg0) {
-		this.last_position.setLocation( arg0.getX(), arg0.getY() );
+		this.last_position.setLocation(arg0.getX(), arg0.getY());
 	}
 
 	@Override
@@ -140,15 +140,15 @@ public class TASRecorder implements Runnable, NativeMouseInputListener, NativeMo
 	@Override
 	public void nativeMousePressed(NativeMouseEvent arg0) {
 	
-		if ( this.running )
-			this.setMouseClick( true, arg0.getButton() );
+		if (this.running)
+			this.setMouseClick(true, arg0.getButton());
 	}
 
 	@Override
 	public void nativeMouseReleased(NativeMouseEvent arg0) {
 
-		if ( this.running )
-			this.setMouseClick( false, arg0.getButton() );
+		if (this.running)
+			this.setMouseClick(false, arg0.getButton());
 	}
 
 	/**

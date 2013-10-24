@@ -24,7 +24,7 @@ public class TAS {
 			
 			Robot robot = new Robot();
 			
-			TASRecorder recorder = new TASRecorder(50);
+			TASRecorder recorder = new TASRecorder(250);
 			GlobalScreen.getInstance().addNativeMouseMotionListener(recorder);
 			GlobalScreen.getInstance().addNativeMouseListener(recorder);
 			
@@ -32,7 +32,7 @@ public class TAS {
 			
 			new DebugFrameTAS(recorder, player, robot);
 			
-		} catch ( AWTException e ) {
+		} catch (AWTException e) {
 			e.printStackTrace();
 		} catch (NativeHookException e) {
 			e.printStackTrace();

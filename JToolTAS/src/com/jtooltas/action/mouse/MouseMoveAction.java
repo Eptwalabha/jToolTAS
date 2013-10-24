@@ -17,7 +17,7 @@ public class MouseMoveAction implements BasicAction {
 
 	private double delay = 0;
 	
-	public MouseMoveAction( Point mouse_start, Point mouse_end, double delay ) {
+	public MouseMoveAction(Point mouse_start, Point mouse_end, double delay) {
 	
 		this.ms = mouse_start;
 		this.me = mouse_end;
@@ -26,20 +26,21 @@ public class MouseMoveAction implements BasicAction {
 	
 	@Override
 	public void execute(Robot robot) {
-
-		double triggered_time = System.currentTimeMillis();
-		double current = System.currentTimeMillis() - triggered_time;
+		
+		double triggered_time = (double) System.currentTimeMillis();
+		double current = ((double) System.currentTimeMillis()) - triggered_time;
 		double progression = 0.0;
 		
-		double move_x = this.me.x - this.ms.x;
-		double move_y = this.me.y - this.ms.y;
+		int move_x = this.me.x - this.ms.x;
+		int move_y = this.me.y - this.ms.y;
 		
-		while ( current < this.delay ) {
+		while (current < this.delay) {
 		
 			progression = current / this.delay;
-			robot.mouseMove( ( int ) ( this.ms.x + move_x * progression ), ( int ) ( this.ms.y + move_y * progression ) );
-			current = System.currentTimeMillis() - triggered_time;
+			robot.mouseMove((int) (this.ms.x + move_x * progression), (int) (this.ms.y + move_y * progression));
+			current = ((double) System.currentTimeMillis()) - triggered_time;
 		}
-		robot.mouseMove( this.me.x, this.me.y );
+		
+		robot.mouseMove(this.me.x, this.me.y);
 	}
 }

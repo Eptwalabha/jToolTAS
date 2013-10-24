@@ -20,7 +20,7 @@ public class ConnectionSQLite {
 	private ConnectionSQLite() throws ClassNotFoundException {
 		super();
 		
-		Class.forName( "org.sqlite.JDBC" );	
+		Class.forName("org.sqlite.JDBC");	
 	}
 
 	/**
@@ -30,11 +30,11 @@ public class ConnectionSQLite {
 	 */
 	public static ConnectionSQLite getInstance() throws ClassNotFoundException {
 
-		if ( ConnectionSQLite.instance == null ) {
+		if (ConnectionSQLite.instance == null) {
 
-			synchronized( ConnectionSQLite.class ) {
+			synchronized(ConnectionSQLite.class) {
 
-				if ( ConnectionSQLite.instance == null )
+				if (ConnectionSQLite.instance == null)
 					ConnectionSQLite.instance = new ConnectionSQLite();
 			}
 		}
@@ -49,13 +49,13 @@ public class ConnectionSQLite {
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
 	 */
-	public boolean connect( String path ) throws SQLException {
+	public boolean connect(String path) throws SQLException {
 
 		boolean connected = false;
 		
-		if ( ConnectionSQLite.instance != null ) {
+		if (ConnectionSQLite.instance != null) {
 
-			this.connection = DriverManager.getConnection( "jdbc:sqlite:" + path );
+			this.connection = DriverManager.getConnection("jdbc:sqlite:" + path);
 			this.old_mode = this.connection.getAutoCommit();
 			this.statement = this.connection.createStatement();
 			
@@ -68,23 +68,23 @@ public class ConnectionSQLite {
 	public void begin() throws SQLException {
 		
 		this.old_mode = this.connection.getAutoCommit();
-		this.connection.setAutoCommit( false );
+		this.connection.setAutoCommit(false);
 	}
 	
 	public void end() throws SQLException {
 		
 		this.connection.commit();
-		this.connection.setAutoCommit( this.old_mode );
+		this.connection.setAutoCommit(this.old_mode);
 	}
 	
-	public void updateQuery( String sql ) throws SQLException {
+	public void updateQuery(String sql) throws SQLException {
 		
-		this.statement.executeUpdate( sql );
+		this.statement.executeUpdate(sql);
 	}
 	
-	public ResultSet selectQuery( String sql ) throws SQLException {
+	public ResultSet selectQuery(String sql) throws SQLException {
 		
-		return this.statement.executeQuery( sql );
+		return this.statement.executeQuery(sql);
 	}
 	
 	public void close() throws SQLException {

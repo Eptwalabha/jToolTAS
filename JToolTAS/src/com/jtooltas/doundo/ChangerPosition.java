@@ -2,8 +2,8 @@ package com.jtooltas.doundo;
 
 public class ChangerPosition extends ActionDoUndo {
 
-	public ChangerPosition( ActionDoUndo preview ) {
-		super( preview );
+	public ChangerPosition(ActionDoUndo preview) {
+		super(preview);
 	}
 	
 	@Override
