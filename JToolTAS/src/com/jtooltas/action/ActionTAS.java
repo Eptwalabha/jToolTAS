@@ -45,6 +45,12 @@ public class ActionTAS {
 		this.action = action;
 	}
 	
+	/**
+	 * Return the size of the chain from the current element.
+	 * This method is recursive. You want to prefer the size() method instead.
+	 * @deprecated
+	 * @return
+	 */
 	public int sizeRecursive() {
 		if (this.next != null)
 			return this.next.sizeRecursive() + 1;
@@ -52,7 +58,7 @@ public class ActionTAS {
 	}
 	
 	/**
-	 * 
+	 * Return the size of the chain from the current element.
 	 * @return
 	 */
 	public int size() {
@@ -67,6 +73,10 @@ public class ActionTAS {
 		return size;
 	}
 
+	/**
+	 * TODO remove this method.
+	 * @deprecated
+	 */
 	public void forgetNext() {
 		this.next = null;
 	}
@@ -162,24 +172,58 @@ public class ActionTAS {
 		return first;
 	}
 	
+	/**
+	 * Set the previous and the next elements (if they exist) to null.
+	 * The current element becomes a chain on its own.
+	 */
 	public void clearLinks() {
 		this.next = null;
 		this.previous = null;
 	}
 
+	/**
+	 * Insert the whole given chain after the current element
+	 * @param action (first element of the chain to insert)
+	 */
 	public void insertAfter(ActionTAS action) {
 		
-		if (this.next != null)
-			action.setNext(this.next);
+		if(this.next != null)
+			action.getLastElement().setNext(this.next);
 		
 		this.setNext(action);
 	}
 
+	/**
+	 * Insert the whole given chain before the current element
+	 * @param action (first element of the chain to insert)
+	 */
 	public void insertBefore(ActionTAS action) {
 		
-		if (this.previous != null)
-			action.setPrevious(this.previous);
+		if(this.previous != null)
+			this.previous.setNext(action);
 		
-		this.setPrevious(action);
+		this.setPrevious(action.getLastElement());
+	}
+
+	/**
+	 * Returns the last element of the chain of the current element.
+	 * @return ActionTAS
+	 */
+	public ActionTAS getLastElement() {
+		ActionTAS cursor = this;
+		while(cursor.next != null)
+			cursor = cursor.next;
+		return cursor;
+	}
+
+	/**
+	 * Returns the first element of the chain of the current element.
+	 * @return ActionTAS
+	 */
+	public ActionTAS getFirstElement() {
+		ActionTAS cursor = this;
+		while (cursor.previous != null)
+			cursor = cursor.previous;
+		return cursor;
 	}
 }

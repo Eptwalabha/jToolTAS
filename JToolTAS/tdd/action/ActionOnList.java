@@ -72,8 +72,17 @@ public class ActionOnList {
 		assertEquals(actions[5], actions[6].previous());
 		assertEquals(null, actions[0].previous());
 		
+		assertEquals(actions[9], actions[0].getLastElement());
+		assertEquals(actions[9], actions[5].getLastElement());
+		assertEquals(actions[9], actions[9].getLastElement());
+		
+		assertEquals(actions[0], actions[9].getFirstElement());
+		assertEquals(actions[0], actions[5].getFirstElement());
+		assertEquals(actions[0], actions[0].getFirstElement());
+		
 		actions[0].setNext(null);
 		assertEquals(1, actions[0].size());
+		
 		
 	}
 	
@@ -174,6 +183,35 @@ public class ActionOnList {
 		
 	}
 
+	@Test
+	public void insertAChainAfter() {
+		
+		assertEquals(20, actions2[0].size());
+		
+		actions2[9].insertAfter(actions[0]);
+		
+		assertEquals(30, actions2[0].size());
+
+		assertEquals(actions2[9], actions[0].previous());
+		assertEquals(actions[0], actions2[9].next());
+		assertEquals(actions[9], actions2[10].previous());
+		assertEquals(actions2[10], actions[9].next());
+		
+	}
+	
+	@Test
+	public void insertAChainBefore() {
+
+		actions2[0].insertBefore(actions[0]);
+		
+		assertEquals(20, actions2[0].size());
+		assertEquals(30, actions[0].size());
+		
+		assertEquals(actions[9], actions2[0].previous());
+		assertEquals(actions2[0], actions[9].next());
+		assertEquals(null, actions[0].previous());
+	}
+	
 	@Test
 	public void insertElementBeforeAnOther() {
 		
